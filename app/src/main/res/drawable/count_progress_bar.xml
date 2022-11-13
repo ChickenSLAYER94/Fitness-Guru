@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--The main purpose if this is to create step progress bar
+    here, first we add daily goal and each time
+    we walk the amount of black color in the circular bar will decrease according
+    to daily set goal and become gray after exceeding the limit-->
+    <item>
+        <shape
+            android:shape="ring"
+            android:thicknessRatio="16"
+            android:useLevel="false">
+            <solid android:color="#DDD" />
+        </shape>
+    </item>
+    <item>
+        <rotate
+            android:fromDegrees="-90"
+            android:toDegrees="-90">
+            <shape
+                android:shape="ring"
+                android:thicknessRatio="16"
+                android:useLevel="true">
+                <solid android:color="@color/black" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

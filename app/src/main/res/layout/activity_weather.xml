@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   android:background="@drawable/weather_activity_bg"
+
+    tools:context=".WeatherActivity">
+
+    <!--Here, I have only created layout of the weather app
+    further steps like fetching information from the weather api will be done in next milestone-->
+    <TextView
+        android:id="@+id/temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:text="15°C"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.399" />
+
+    <TextView
+        android:id="@+id/beforePlaceName"
+        android:layout_width="139dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="60dp"
+        android:text="Location"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="35dp"
+        app:layout_constraintBottom_toTopOf="@+id/temp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.201" />
+
+    <TextView
+        android:id="@+id/placeName"
+        android:layout_width="139dp"
+        android:layout_height="57dp"
+        android:text="Dublin"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/temp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/beforePlaceName"
+        app:layout_constraintVertical_bias="0.1" />
+
+
+    <TextView
+        android:id="@+id/condition"
+        android:layout_width="139dp"
+        android:layout_height="57dp"
+        android:text="breezy"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.345" />
+
+    <TextView
+        android:id="@+id/hiTemp"
+        android:layout_width="105dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="124dp"
+        android:text="H:17°"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="20dp"
+
+        app:layout_constraintEnd_toStartOf="@+id/lowTemp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/temp" />
+
+    <TextView
+        android:id="@+id/lowTemp"
+        android:layout_width="105dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="104dp"
+        android:text="L:14°"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/temp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
