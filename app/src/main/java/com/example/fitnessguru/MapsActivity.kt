@@ -1,15 +1,15 @@
 package com.example.fitnessguru
 
-import android.content.ContentProviderClient
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.LocaleList
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,12 +19,21 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.example.fitnessguru.databinding.ActivityMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var currentLocation: Location
+
+    //here for milestone 2 I am adding destination's latitude and longitude manually
+    private var destinationLatitude: Double = 53.329453
+    private var destinationLongitude: Double = -6.275760
 
     //retrieve last known location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -37,7 +46,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getCurrentLocationUser()
-
     }
 
     private fun getCurrentLocationUser() {
@@ -61,6 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
             return
         }
+
         //addOnSuccessListener is used when task completes successfully
         val getLocation =
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
@@ -77,7 +86,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val mapFragment = supportFragmentManager
                         .findFragmentById(R.id.map) as SupportMapFragment
                     mapFragment.getMapAsync(this)
+                    val gd = findViewById<Button>(R.id.directions)
+                    gd.setOnClickListener {
+                        mapFragment.getMapAsync {
+                            mMap = it
+                            val originLocation =
+                                LatLng(currentLocation.latitude, currentLocation.longitude)
+                            mMap.addMarker(MarkerOptions().position(originLocation))
+                            val destinationLocation =
+                                LatLng(destinationLatitude, destinationLongitude)
+                            mMap.addMarker(MarkerOptions().position(destinationLocation))
 
+                            //here I am retrieving information via Google Direction API to get the ideal way for walking or running
+                            val urlToExtractDistanceInfo = findDirectionFromURL(
+                                originLocation,
+                                destinationLocation,
+                                "AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30"
+                            )
+                            findDirection(urlToExtractDistanceInfo).execute()
+                            //camera zoom after distance is known and displayed
+                            mMap.animateCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    originLocation,
+                                    15F
+                                )
+                            )
+                        }
+                    }
                 }
             }
     }
@@ -103,19 +138,98 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             currentLocation.latitude,
             currentLocation.longitude
         ) //this function is triggered when is ready to be used and provide a non null instance of google map
+
         /*Create a Marker to the map*/
-        val marketOptions = MarkerOptions().position(latLng).title("Current Location")
+        val markerOptions = MarkerOptions().position(latLng).title("Current Location")
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
 
         googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-        googleMap?.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(
-                latLng,
-                15f
-            )
-        )
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         //15f represent how much zoomed in map you want when opening this activity
         //put the red marker on current position on the map
-        googleMap?.addMarker(marketOptions)
+        googleMap?.addMarker(markerOptions)
+
+    }
+
+//this method return url to extract the information regarding distance.
+    //here we are using mode walking to get the best route for fitness activity
+     fun findDirectionFromURL(origin: LatLng, dest: LatLng, secret: String): String {
+        return "https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}" +
+                "&destination=${dest.latitude},${dest.longitude}" +
+                "&sensor=false" +
+                "&mode=walking" +
+                "&key=$secret"
+    }
+
+    //retrive google maps direction from API
+    //this will call decodeJsonMarking function for decoding Json file
+     inner class findDirection(val url: String) :
+        AsyncTask<Void, Void, List<List<LatLng>>>() {
+        override fun doInBackground(vararg params: Void?): List<List<LatLng>> {
+            val req = Request.Builder().url(url).build()
+            val reply = OkHttpClient().newCall(req).execute()
+            val info = reply.body!!.string()
+            val output = ArrayList<List<LatLng>>()
+            try {
+                //reply from object
+                val repObj = Gson().fromJson(info, MapData::class.java)
+                val way = ArrayList<LatLng>()
+                for (i in 0 until repObj.routes[0].legs[0].steps.size) {
+                    way.addAll(decodeJsonMarking(repObj.routes[0].legs[0].steps[i].polyline.points))
+                }
+                output.add(way)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return output
+        }
+
+        //this will mark the information current location to destination with the green line.
+        override fun onPostExecute(result: List<List<LatLng>>) {
+            val lineoption = PolylineOptions()
+            for (i in result.indices) {
+                lineoption.addAll(result[i])
+                lineoption.width(10f)
+                lineoption.color(Color.GREEN)
+                lineoption.geodesic(true)
+            }
+            mMap.addPolyline(lineoption)
+        }
+    }
+
+    /*since the information from google maps direction url in getDirectionURL() function results in json
+    we have to decode it*/
+    fun decodeJsonMarking(encoded: String): List<LatLng> {
+        val lineMarking = ArrayList<LatLng>()
+        //let i is Index
+        var i = 0
+        val length = encoded.length
+        var latitude = 0
+        var longitude = 0
+        while (i < length) {
+            var b: Int
+            var shift = 0
+            var output = 0
+            do {
+                b = encoded[i++].code - 63
+                output = output or (b and 0x1f shl shift)
+                shift += 5
+            } while (b >= 0x20)
+            val dlat = if (output and 1 != 0) (output shr 1).inv() else output shr 1
+            latitude += dlat
+            shift = 0
+            output = 0
+            do {
+                b = encoded[i++].code - 63
+                output = output or (b and 0x1f shl shift)
+                shift += 5
+            } while (b >= 0x20)
+            val dlng = if (output and 1 != 0) (output shr 1).inv() else output shr 1
+            longitude += dlng
+            val latitudePlusLongitude = LatLng((latitude.toDouble() / 1E5), (longitude.toDouble() / 1E5))
+            lineMarking.add(latitudePlusLongitude)
+        }
+        return lineMarking
     }
 
 }
