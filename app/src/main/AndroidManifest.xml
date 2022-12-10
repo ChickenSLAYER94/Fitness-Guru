@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!--added permission for location-->
+    <!-- added permission for location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
@@ -18,7 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessGuru"
         tools:targetApi="31">
-        <!--remove action bar in weather app-->
+        <activity
+            android:name=".UserGoalActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- remove action bar in weather app -->
         <activity
             android:name=".WeatherActivity"
             android:exported="false"
@@ -27,6 +38,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30" />
@@ -37,12 +49,7 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
 
             <meta-data
                 android:name="android.app.lib_name"

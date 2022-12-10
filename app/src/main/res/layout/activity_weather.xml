@@ -93,7 +93,7 @@
             </LinearLayout>
 
         </LinearLayout>
-<!--        for 6 function which gives different type of status like humidity, pressure, etx-->
+<!--        for 6 function which gives different type of status like humidity, pressure, etaax-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
