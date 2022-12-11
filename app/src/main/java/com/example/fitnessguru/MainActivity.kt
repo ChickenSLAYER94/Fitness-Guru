@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     //this is for progress bar
     private var probar = 0
-    private var userStepGoal = 10000
+    private var userStepGoal = 0
     private var userSetDistance = 0.0
     private var calBurned = 0.0
     private var distanceTravelled = 0.0
@@ -33,6 +33,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        //getting user set goal from UserGoalActivity.kt activity
+        val setGoalInfo = intent.getStringExtra("UserSetGoal")
+
+        if (setGoalInfo != null) {
+            userStepGoal = setGoalInfo.toInt()
+        }
+
+
         distanceCalulate()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -53,20 +63,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val intent = Intent(this@MainActivity, MapsActivity::class.java)
             startActivity(intent)
         }
-        //start weather activity when weather button is pressed in the main Activity
-        //also save data to the database
-        findViewById<Button>(R.id.button_weather).setOnClickListener {
-            var cv = ContentValues()
-            cv.put("UserSetGoal", userStepGoal.toString())
-            cv.put("CalBurned", calBurned.toString())
-            cv.put("DistanceTravelled", distanceTravelled.toString())
-            cv.put("Progression", probar.toString())
-            cv.put("RemainingSteplimit", remainingSteplimit.toString())
-            db.insert("STEPCOUNTER", null, cv)
 
-            val intent = Intent(this@MainActivity, WeatherActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onResume() {
@@ -98,7 +95,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             if (currentSteps < userStepGoal) {
                 remainingSteplimit = userStepGoal - currentSteps
                 //this will print remaining steps from daily limit.
-                findViewById<TextView>(R.id.stepsRemaining).text = ("$remainingSteplimit")
+                if(remainingSteplimit>0) {
+                    findViewById<TextView>(R.id.stepsRemaining).text = ("$remainingSteplimit")
+                } else if (remainingSteplimit<1){
+                    findViewById<TextView>(R.id.stepsRemaining).text = ("Goal Reached")
+                }
             }
 
             //here I am taking average data which is 10000 steps is 8 kilometers

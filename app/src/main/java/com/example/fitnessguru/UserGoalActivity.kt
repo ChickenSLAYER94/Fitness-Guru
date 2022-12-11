@@ -8,31 +8,34 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 
 class UserGoalActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_goal)
-        _textview = findViewById<TextView>(R.id.textview)
-        _edittext = findViewById<EditText>(R.id.edittext)
-        _edittext?.setOnEditorActionListener(object: TextView.OnEditorActionListener {
-            override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
-                // if the enter button has been clicked on the edit text then update the textview
-                if (p1 == EditorInfo.IME_ACTION_DONE) {
-                    _textview?.setText("Entered: " + _edittext?.getText())
-                    return true
-                }
-                // if the event has not been handled then return false
-                return false
-            }
-        })
-        findViewById<Button>(R.id.userDataConfirm).setOnClickListener {
-            val intent = Intent(this@UserGoalActivity, MainActivity::class.java)
-            startActivity(intent)
-        }
 
+        val  button = findViewById<Button>(R.id.userDataConfirm)
+
+
+        //before going to the step counter
+        //it will ask for digit input
+        //if the user input nothing it will display toast method
+        //if valid digit is added it will then proceed to main activity with user step goal limit shared to next activity
+        button.setOnClickListener{
+            val editText = findViewById<EditText>(R.id.userInput)
+            val message = editText.text.toString()
+
+            if (!message.equals("")) {
+                val intent = Intent(this, MainActivity::class.java).also {
+                    it.putExtra("UserSetGoal", message)
+                    startActivity(it)
+                }
+            }
+            else if (message.equals("")){
+                Toast.makeText(applicationContext,"Please input your daily limit",Toast.LENGTH_SHORT).show()
+            }
+
+        }
     }
-    // private fields of the class
-    private var _textview: TextView? = null
-    private var _edittext: EditText? = null
 }

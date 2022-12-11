@@ -1,5 +1,7 @@
 package com.example.fitnessguru
 
+import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -46,6 +48,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getCurrentLocationUser()
+
+        //start weather activity when weather button is pressed in the maps Activity
+        findViewById<Button>(R.id.weatherInfo).setOnClickListener {
+            val intent = Intent(this@MapsActivity, WeatherActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getCurrentLocationUser() {

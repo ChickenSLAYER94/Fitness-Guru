@@ -14,12 +14,36 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
 <!--    button to initiate route functionality-->
-    <Button
-        android:id="@+id/directions"
-        android:layout_width="wrap_content"
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:text = "Search Route"
-         />
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/directions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text = "Search Route"
+            />
+
+        <Space
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"></Space>
+
+        <Button
+            android:id="@+id/weatherInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text = "Weather Status"
+            />
+
+    </LinearLayout>
 </RelativeLayout>

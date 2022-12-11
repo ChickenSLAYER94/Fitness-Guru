@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter text here"
-        android:inputType="text"
-        android:id="@+id/edittext"
+        android:inputType="phone"
+        android:id="@+id/userInput"
         />
     <Button
     android:id="@+id/userDataConfirm"
