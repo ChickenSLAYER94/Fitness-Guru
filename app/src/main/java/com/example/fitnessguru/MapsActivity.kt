@@ -27,8 +27,9 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.gson.Gson
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import com.google.gson.GsonBuilder
+import okhttp3.*
+import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -71,6 +72,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
         }
+
     }
 
     // function to return the latitude and longitude of the address
@@ -164,7 +166,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 destinationLocation,
                                 "AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30"
                             )
+
+
                             findDirection(urlToExtractDistanceInfo).execute()
+
+
+                            Log.e(urlToExtractDistanceInfo.toString(),"**********this is latitude*********" )
+                            fetchDistanceFromJson()
+                            Log.e(fetchDistanceFromJson().toString(),"**********this is latitude*********" )
                             //camera zoom after distance is known and displayed
                             mMap.animateCamera(
                                 CameraUpdateFactory.newLatLngZoom(
@@ -209,7 +218,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //15f represent how much zoomed in map you want when opening this activity
         //put the red marker on current position on the map
         googleMap?.addMarker(markerOptions)
-
     }
 
 //this method return url to extract the information regarding distance.
@@ -222,7 +230,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 "&key=$secret"
     }
 
-    //retrive google maps direction from API
+    //retrieve google maps direction from API
     //this will call decodeJsonMarking function for decoding Json file
      inner class findDirection(val url: String) :
         AsyncTask<Void, Void, List<List<LatLng>>>() {
@@ -257,6 +265,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             mMap.addPolyline(lineoption)
         }
     }
+
+
 
     /*since the information from google maps direction url in getDirectionURL() function results in json
     we have to decode it*/
@@ -293,8 +303,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return lineMarking
     }
 
+    //retrieve distance between two points
+    fun fetchDistanceFromJson() {
+        println("test get json element")
+
+        val url = "https://maps.googleapis.com/maps/api/directions/json?origin=53.3307841,-6.2736451&destination=53.332295,-6.273868&sensor=false&mode=walking&key=AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30"
+        val request = Request.Builder().url(url).build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object: Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                //If fail to get response
+                println("Failed to execute request")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+              val body = response?.body!!.string()
+                val gson = GsonBuilder().create()
+                val distanceInfoLoc = gson.fromJson(body, MapData::class.java)
+                val distanceBetnDirection = distanceInfoLoc.routes[0].legs[0].distance.text
+                println(distanceBetnDirection)
+                Log.e(distanceBetnDirection.toString(),"****Distance check****")
 
 
+            }
 
+        }) //callback whenever finish resolving this request
+
+    }
 }
 
