@@ -58,7 +58,8 @@
             android:text="Weather Status" />
 
     </LinearLayout>
-   <!-- <GridLayout
+    <GridLayout
+        android:id="@+id/locationStats"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
@@ -66,6 +67,7 @@
         android:orientation="vertical"
         android:padding="15dp"
         android:columnCount="1">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +76,6 @@
         android:baselineAligned="false"
         android:background="@color/white"
         android:padding="5dp"
-        tools:context=".GpsMap"
         >
     <RelativeLayout
         android:layout_width="0dp"
@@ -84,23 +85,24 @@
         >
 
         <TextView
-            android:id="@+id/distance_content_tv"
+            android:id="@+id/distanceToCover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="content"
+            android:text="0"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+             />
 
         <TextView
             android:id="@+id/distance_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:layout_below="@id/distance_content_tv"
+            android:layout_below="@id/distanceToCover"
             android:layout_centerInParent="true"
-            android:text="title"
+            android:text="Distance"
             android:textAlignment="center" />
     </RelativeLayout>
     <RelativeLayout
@@ -111,11 +113,11 @@
         >
 
         <TextView
-            android:id="@+id/calories_content_tv"
+            android:id="@+id/estimatedDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="content"
+            android:text="0"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -126,8 +128,8 @@
             android:minHeight="48dp"
             android:layout_centerInParent="true"
             android:textAlignment="center"
-            android:layout_below="@id/calories_content_tv"
-            android:text="title"
+            android:layout_below="@id/estimatedDuration"
+            android:text="Duration"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -142,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="content"
+            android:text="0"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -154,9 +156,10 @@
             android:layout_centerInParent="true"
             android:textAlignment="center"
             android:layout_below="@id/duration_content_tv"
-            android:text="itle"
+            android:text="Kcal Burned"
             />
     </RelativeLayout>
     </LinearLayout>
-    </GridLayout>-->
+    </GridLayout>
+
 </LinearLayout>

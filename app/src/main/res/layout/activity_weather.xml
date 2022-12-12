@@ -292,6 +292,7 @@
         </LinearLayout>
 
     </RelativeLayout>
+
     <!--This loading screen comes whenever the code is weather activity launched-->
     <ProgressBar android:id="@+id/loadingScreen" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:layout_centerInParent="true"
@@ -301,4 +302,5 @@
     <TextView android:id="@+id/errorOrInternet" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:layout_centerInParent="true"
         android:visibility="gone" android:text="Unable to retrive information"/>
+
 </RelativeLayout>

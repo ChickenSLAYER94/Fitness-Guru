@@ -11,9 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.LocaleList
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -29,7 +28,10 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.*
+import org.json.JSONObject
 import java.io.IOException
+import java.net.URL
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -42,6 +44,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     //here for milestone 2 I am adding destination's latitude and longitude manually
     private var destinationLatitude: Double = 0.0
     private var destinationLongitude: Double = 0.0
+    val API: String = "AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30"
+    var locationDetails = ArrayList<String>()
 
     //retrieve last known location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -152,28 +156,34 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 Toast.makeText(applicationContext,"Location Invalid",Toast.LENGTH_SHORT).show()
                             }
 
+
+
+
                             mMap = it
                             val originLocation =
                                 LatLng(currentLocation.latitude, currentLocation.longitude)
                             mMap.addMarker(MarkerOptions().position(originLocation))
+
                             val destinationLocation =
                                 LatLng(destinationLatitude, destinationLongitude)
-                            mMap.addMarker(MarkerOptions().position(destinationLocation))
 
                             //here I am retrieving information via Google Direction API to get the ideal way for walking or running
-                            val urlToExtractDistanceInfo = findDirectionFromURL(
+                            val urlToExtractInfo = findDirectionFromURL(
                                 originLocation,
                                 destinationLocation,
                                 "AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30"
                             )
 
 
-                            findDirection(urlToExtractDistanceInfo).execute()
+                            findDirection(urlToExtractInfo).execute()
+
+                            //run this first to add element in locationDetails arraylist
+                            updateDistanceAndDuration().execute()
+
+                            //prints api url
+                            println(urlToExtractInfo)
 
 
-                            Log.e(urlToExtractDistanceInfo.toString(),"**********this is latitude*********" )
-                            fetchDistanceFromJson()
-                            Log.e(fetchDistanceFromJson().toString(),"**********this is latitude*********" )
                             //camera zoom after distance is known and displayed
                             mMap.animateCamera(
                                 CameraUpdateFactory.newLatLngZoom(
@@ -303,12 +313,65 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return lineMarking
     }
 
-    //retrieve distance between two points
-    fun fetchDistanceFromJson() {
-        println("test get json element")
+    //retrieve distance between two Location
+    //call google direction api and convert json to get location information
+    inner class updateDistanceAndDuration() : AsyncTask<String, Void, String>() {
+        override fun doInBackground(vararg params: String?): String? {
+            var response:String?
+            try{
+                //api url
+                //here latitude and longitude is manually added for this tutorial
+                response = URL("https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation.latitude},${currentLocation.longitude}" +
+                        "&destination=${destinationLatitude},${destinationLongitude}" +
+                        "&sensor=false" +
+                        "&mode=walking" +
+                        "&key=$API").readText(Charsets.UTF_8)
+            }catch (e: Exception){
+                response = null
+            }
+            return response
+        }
 
-        val url = "https://maps.googleapis.com/maps/api/directions/json?origin=53.3307841,-6.2736451&destination=53.332295,-6.273868&sensor=false&mode=walking&key=AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30"
-        val request = Request.Builder().url(url).build()
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            try {
+                /* Extracting information from the API which is in JSON */
+                val jsonObj = JSONObject(result)
+                //distance in between two location
+                val DisBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getString("text")
+
+                //Duration to reach from one destination to another
+                val DuraBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").getString("text")
+                println(DisBwtnTwoLoc)
+                println(DuraBwtnTwoLoc)
+                Log.e(DisBwtnTwoLoc.toString(),"this is test ****** allu")
+
+
+                findViewById<TextView>(R.id.distanceToCover).text = DisBwtnTwoLoc
+                locationDetails.add(DisBwtnTwoLoc.toString())
+                findViewById<TextView>(R.id.estimatedDuration).text = DuraBwtnTwoLoc
+
+                val destinationLocation =
+                    LatLng(destinationLatitude, destinationLongitude)
+
+                val markerOptions = MarkerOptions().position(destinationLocation).title(DisBwtnTwoLoc)
+                mMap.addMarker(markerOptions)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+
+
+
+
+    //retrieve duration to reach form one location to another Location
+    //call google direction api and convert json to get location information
+  /*  fun fetchDurationFromJson(apiUrl: String) {
+        println("test get Duration element")
+        val request = Request.Builder().url(apiUrl).build()
 
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback{
@@ -318,18 +381,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             override fun onResponse(call: Call, response: Response) {
-              val body = response?.body!!.string()
+                val body = response?.body!!.string()
                 val gson = GsonBuilder().create()
                 val distanceInfoLoc = gson.fromJson(body, MapData::class.java)
-                val distanceBetnDirection = distanceInfoLoc.routes[0].legs[0].distance.text
-                println(distanceBetnDirection)
-                Log.e(distanceBetnDirection.toString(),"****Distance check****")
+                val durationBetnDirection = distanceInfoLoc.routes[0].legs[0].duration.text
+//                findViewById<TextView>(R.id.estimatedDuration).text = "hello"
 
-
+                println(durationBetnDirection)
+                Log.e(durationBetnDirection.toString(),"****Duration check check****")
             }
 
         }) //callback whenever finish resolving this request
+    }*/
 
-    }
 }
-
