@@ -13,11 +13,15 @@ import java.util.*
 class WeatherActivity : AppCompatActivity() {
     //weather api from openweathermap.org
     val API: String = "14933351abd3008db5d2821f5287684b"
+    var retriveLatitude = ""
+    var retriveLongitude = ""
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
         weatherInfoRetrival().execute()
+        retriveLatitude = intent.getStringExtra("latitudeInfo").toString()
+        retriveLongitude = intent.getStringExtra("longitudeInfo").toString()
     }
 
     inner class weatherInfoRetrival() : AsyncTask<String, Void, String>() {
@@ -34,7 +38,7 @@ class WeatherActivity : AppCompatActivity() {
             try{
                 //api url
                 //here latitude and longitude is manually added for this tutorial
-                response = URL("https://api.openweathermap.org/data/2.5/weather?lat=53.33&lon=-6.27&units=metric&appid=$API").readText(
+                response = URL("https://api.openweathermap.org/data/2.5/weather?lat=$retriveLatitude&lon=$retriveLongitude&units=metric&appid=$API").readText(
                     Charsets.UTF_8
                 )
             }catch (e: Exception){
@@ -46,7 +50,7 @@ class WeatherActivity : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             try {
-                /* Extracting information from the API whcih is in JSON */
+                /* Extracting information from the API which is in JSON */
                 val jsonObj = JSONObject(result)
                 val main = jsonObj.getJSONObject("main")
                 val sys = jsonObj.getJSONObject("sys")

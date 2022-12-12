@@ -4,46 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity" >
+    tools:context=".MapsActivity">
 
-<fragment
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/map"
-    tools:context=".MapsActivity"
-    android:name="com.google.android.gms.maps.SupportMapFragment"/>
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MapsActivity" />
 
-<!--    button to initiate route functionality-->
-
-
-
-
+    <!--    button to initiate route functionality-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/userLocationInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter Location here"
+            android:inputType="text" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"></Space>
+
         <Button
             android:id="@+id/directions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:text = "Search Route"
-            />
+
+            android:text="Search Route" />
 
         <Space
-            android:layout_width="50dp"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"></Space>
 
         <Button
             android:id="@+id/weatherInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:text = "Weather Status"
-            />
+            android:text="Weather Status" />
 
     </LinearLayout>
 </RelativeLayout>

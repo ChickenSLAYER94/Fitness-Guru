@@ -4,12 +4,15 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Geocoder
 import android.location.Location
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.LocaleList
+import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,6 +29,8 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -34,8 +39,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var currentLocation: Location
 
     //here for milestone 2 I am adding destination's latitude and longitude manually
-    private var destinationLatitude: Double = 53.329453
-    private var destinationLongitude: Double = -6.275760
+    private var destinationLatitude: Double = 0.0
+    private var destinationLongitude: Double = 0.0
 
     //retrieve last known location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -51,10 +56,37 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //start weather activity when weather button is pressed in the maps Activity
         findViewById<Button>(R.id.weatherInfo).setOnClickListener {
-            val intent = Intent(this@MapsActivity, WeatherActivity::class.java)
-            startActivity(intent)
+            val currentlatitude = currentLocation.latitude.toString()
+            val currentlongitude = currentLocation.longitude.toString()
+
+            if (!currentlatitude.equals("")) {
+                val intent = Intent(this, WeatherActivity::class.java).also {
+                    it.putExtra("latitudeInfo", currentlatitude)
+                    it.putExtra("longitudeInfo", currentlongitude)
+                    startActivity(it)
+                }
+            }
+            else if (currentlatitude.equals("")){
+                Toast.makeText(applicationContext,"no Input",Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
+
+    // function to return the latitude and longitude of the address
+    private fun addressToLatLng(address: String): String? {
+        var city: String = address
+        return try{
+            var geoCode= Geocoder(this, Locale.getDefault())
+            var addresses = geoCode.getFromLocationName("$city",1)
+            var lat = addresses[0].latitude
+            var lng = addresses[0].longitude
+            "$lat,$lng" //return latitude and longitude separated by ","
+        }catch(e: Exception){
+            return null
+        }
+    }
+
 
     private fun getCurrentLocationUser() {
         //here we check permission is granted or not
@@ -97,6 +129,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val gd = findViewById<Button>(R.id.directions)
                     gd.setOnClickListener {
                         mapFragment.getMapAsync {
+
+                            //this enable to input the desired location
+                            //calling function addressToLatLng which converts human readable address to longitude and latitude
+                            val editText = findViewById<EditText>(R.id.userLocationInput)
+                            val locationToLatNLag = editText.text.toString()
+                            val addressFind  = addressToLatLng(locationToLatNLag)
+                            //Since addressToLatLng returns $latitude,$longitude delimiter is used sto separate it
+                            val delimiter=","
+                            val list1 = addressFind?.split(delimiter)
+                            if (list1 != null) {
+                                destinationLatitude = list1.get(0).toDouble()
+                                destinationLongitude = list1.get(1).toDouble()
+
+                                //test output in logcat **** remove it *****
+                                Log.e(list1.get(0),"this is latitude" )
+                                Log.e(list1.get(1),"this is longitude" )
+                            } else{
+                                //if location not found it will print this
+                                Toast.makeText(applicationContext,"Location Invalid",Toast.LENGTH_SHORT).show()
+                            }
+
                             mMap = it
                             val originLocation =
                                 LatLng(currentLocation.latitude, currentLocation.longitude)
@@ -239,6 +292,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         return lineMarking
     }
+
+
+
 
 }
 
