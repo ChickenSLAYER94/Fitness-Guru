@@ -338,23 +338,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 /* Extracting information from the API which is in JSON */
                 val jsonObj = JSONObject(result)
                 //distance in between two location
-                val DisBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getString("text")
+                val disBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getString("text")
 
                 //Duration to reach from one destination to another
-                val DuraBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").getString("text")
-                println(DisBwtnTwoLoc)
-                println(DuraBwtnTwoLoc)
-                Log.e(DisBwtnTwoLoc.toString(),"this is test ****** allu")
+                val duraBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").getString("text")
+
+                val addresstoReach = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getString("end_address")
+                println(disBwtnTwoLoc)
+                println(duraBwtnTwoLoc)
+                println(addresstoReach)
+                Log.e(disBwtnTwoLoc.toString(),"this is test ****** allu")
 
 
-                findViewById<TextView>(R.id.distanceToCover).text = DisBwtnTwoLoc
-                locationDetails.add(DisBwtnTwoLoc.toString())
-                findViewById<TextView>(R.id.estimatedDuration).text = DuraBwtnTwoLoc
+                findViewById<TextView>(R.id.distanceToCover).text = disBwtnTwoLoc
+                locationDetails.add(disBwtnTwoLoc.toString())
+                findViewById<TextView>(R.id.estimatedDuration).text = duraBwtnTwoLoc
 
                 val destinationLocation =
                     LatLng(destinationLatitude, destinationLongitude)
 
-                val markerOptions = MarkerOptions().position(destinationLocation).title(DisBwtnTwoLoc)
+                val markerOptions = MarkerOptions().position(destinationLocation).title(disBwtnTwoLoc+", "+addresstoReach)
                 mMap.addMarker(markerOptions)
 
             } catch (e: Exception) {
@@ -367,31 +370,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-    //retrieve duration to reach form one location to another Location
-    //call google direction api and convert json to get location information
-  /*  fun fetchDurationFromJson(apiUrl: String) {
-        println("test get Duration element")
-        val request = Request.Builder().url(apiUrl).build()
 
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object: Callback{
-            override fun onFailure(call: Call, e: IOException) {
-                //If fail to get response
-                println("Failed to execute request")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response?.body!!.string()
-                val gson = GsonBuilder().create()
-                val distanceInfoLoc = gson.fromJson(body, MapData::class.java)
-                val durationBetnDirection = distanceInfoLoc.routes[0].legs[0].duration.text
-//                findViewById<TextView>(R.id.estimatedDuration).text = "hello"
-
-                println(durationBetnDirection)
-                Log.e(durationBetnDirection.toString(),"****Duration check check****")
-            }
-
-        }) //callback whenever finish resolving this request
-    }*/
 
 }
