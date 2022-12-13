@@ -84,10 +84,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             startActivity(it)
                         }
                     } else if (currentlatitude.equals("")) {
-                        Toast.makeText(applicationContext, "no Input", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Latitude info", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(applicationContext, "no no Input", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "trun on internet and gps both", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -167,9 +167,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 destinationLatitude = list1.get(0).toDouble()
                                 destinationLongitude = list1.get(1).toDouble()
 
-                                //test output in logcat **** remove it *****
-                                Log.e(list1.get(0), "this is latitude")
-                                Log.e(list1.get(1), "this is longitude")
                             } else {
                                 //if location not found it will print this
                                 Toast.makeText(
@@ -178,9 +175,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-
-
-
 
                             mMap = it
                             val originLocation =
@@ -197,15 +191,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 "AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30"
                             )
 
-
                             findDirection(urlToExtractInfo).execute()
-
                             //run this first to add element in locationDetails arraylist
                             updateDistanceAndDuration().execute()
 
                             //prints api url
                             println(urlToExtractInfo)
-
 
                             //camera zoom after distance is known and displayed
                             mMap.animateCamera(
@@ -375,10 +366,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val addresstoReach =
                     jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
                         .getJSONObject(0).getString("end_address")
-                println(disBwtnTwoLoc)
-                println(duraBwtnTwoLoc)
-                println(addresstoReach)
-                Log.e(disBwtnTwoLoc.toString(), "this is test ****** allu")
 
                 //find distance in between two location
                 findViewById<TextView>(R.id.distanceToCover).text = disBwtnTwoLoc
@@ -390,7 +377,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 //find expected calories burned
                 /*calculation, stats: on avg 10000 steps = 8 km and 1000 steps is 49 kcal burned so
                 by applying this we get*/
-
                 val kmToCalData = disBwtnTwoLoc
                 //Since data disBwtnTwoLoc() contains " km" string with data we have separate it with delimiter to get data only
                 val delimiter = " km"
@@ -401,8 +387,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val roundUp = Math.round(caloriesToBurned * 10) / 10.0
                     findViewById<TextView>(R.id.calToBurned).text = roundUp.toString()
                 }
-
-
                 val destinationLocation =
                     LatLng(destinationLatitude, destinationLongitude)
 

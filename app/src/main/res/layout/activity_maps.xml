@@ -13,18 +13,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-     >
+        android:paddingTop="10dp">
 
 
         <EditText
             android:id="@+id/userLocationInput"
             android:layout_width="300dp"
             android:layout_height="40dp"
-            android:hint="Enter Location here"
-            android:inputType="text"
             android:layout_marginLeft="10dp"
-            />
+            android:hint="Enter Location here"
+            android:inputType="text" />
 
 
         <!--        //add icon to the button-->
@@ -35,22 +33,18 @@
             android:layout_height="40dp"
             app:icon="@drawable/ic_baseline_search_24"
 
-           />
+            />
 
-<!--        this for updating current location-->
+        <!--        this for updating current location-->
         <Button
             android:id="@+id/updateLocation"
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            app:icon="@drawable/ic_baseline_location_searching_24"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-           />
+            app:icon="@drawable/ic_baseline_location_searching_24" />
 
-        <!-- <Space
-             android:layout_width="10dp"
-             android:layout_height="wrap_content"></Space>-->
 
     </LinearLayout>
 
@@ -68,7 +62,6 @@
     </fragment>
 
     <!--    button to initiate route functionality-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

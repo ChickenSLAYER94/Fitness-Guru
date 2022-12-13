@@ -1,5 +1,5 @@
 package com.example.fitnessguru
-
+//MyDB will call this
 data class fitnessData (
     var USERID: Int,
     var UserSetGoal:String,

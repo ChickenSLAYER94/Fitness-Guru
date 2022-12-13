@@ -165,7 +165,7 @@
             <LinearLayout
                 android:id="@+id/overviewContainer"
                 android:layout_width="match_parent"
-                android:layout_height="420dp"
+                android:layout_height="660dp"
                 android:layout_centerInParent="true"
                 android:orientation="vertical">
 
@@ -223,11 +223,11 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/auto_complete_selection"
+                android:id="@+id/retreiveDataFromDB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="-250dp"
                 android:text="Stats"
 
                 app:backgroundTint="#007FFF"
@@ -237,7 +237,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-110dp"
+                android:layout_marginTop="-90dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -267,10 +267,129 @@
                     app:backgroundTint="#007FFF" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:layout_marginTop="90dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <!--                    display distance travelled-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#FAFAFA"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Distance"
+                            android:textSize="12dp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/distanceRetreive"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:id="@+id/distanceRetreive1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="14dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#FAFAFA"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kcal Burned"
+                            android:textSize="12dp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/kcaldb1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:id="@+id/kcaldb2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="14dp" />
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#FAFAFA"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Date"
+                            android:textSize="12dp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/dateRetrieve"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="14dp" />
+                        <TextView
+                            android:id="@+id/dateRetrieve2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="14dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
         </LinearLayout>
 
 
     </ScrollView>
+
+
+
 
 
 </RelativeLayout>
