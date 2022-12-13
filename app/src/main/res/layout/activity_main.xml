@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout class="androidx.appcompat.app.AlertController$RecycleListView" xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    class="androidx.appcompat.app.AlertController$RecycleListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-<!--I changed from using constraintLayout which is much more effective and good practice-->
-
-
+    <!--I changed from using constraintLayout which is much more effective and good practice-->
 
     <!--layout for the main activity-->
-    <RelativeLayout
-        android:id="@+id/stepContainer"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        android:padding="25dp">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
-            >
+            android:orientation="vertical"
+            android:padding="25dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="30dp"
+                android:text="Step Counter"
+                android:padding="15dp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-thin"
+                />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -37,178 +48,217 @@
                     android:orientation="horizontal"
                     android:weightSum="3">
 
-<!--                    display distance travelled-->
+                    <!--                    display distance travelled-->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_weight="1"
+                        android:background="#FAFAFA"
                         android:gravity="center"
+                        android:orientation="vertical"
                         android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:background="#FAFAFA">
+                        android:paddingBottom="8dp">
 
-                        <ImageView android:layout_width="25dp"
+                        <ImageView
+                            android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:src="@drawable/distance" />
 
-                        <Space android:layout_width="wrap_content"
-                            android:layout_height="5dp"/>
-                        <TextView android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:text="Distance"/>
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="5dp" />
 
-                        <TextView android:id="@+id/distance"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14dp"
-                            android:text="5 km"/>
+                            android:text="Distance"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:id="@+id/distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5 km"
+                            android:textSize="14dp" />
 
                     </LinearLayout>
-                    <Space android:layout_width="10dp"
-                        android:layout_height="wrap_content"/>
 
-<!--                    displays calorie burned-->
-                    <LinearLayout android:layout_width="0dp"
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content" />
+
+                    <!--                    displays calorie burned-->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_weight="1"
+                        android:background="#FAFAFA"
                         android:gravity="center"
-                        android:padding="8dp"
-                        android:background="#FAFAFA">
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
-                        <ImageView android:layout_width="25dp"
+                        <ImageView
+                            android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/calories"/>
-                        <Space android:layout_width="wrap_content"
-                            android:layout_height="5dp"/>
+                            android:src="@drawable/calories" />
 
-                        <TextView android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:text="Kcal Burned"/>
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="5dp" />
 
-                        <TextView android:id="@+id/calories"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14dp"
-                            android:text="525 kcal"/>
+                            android:text="Kcal Burned"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:id="@+id/calories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="525 kcal"
+                            android:textSize="14dp" />
 
                     </LinearLayout>
 
-                    <Space android:layout_width="10dp"
-                        android:layout_height="wrap_content"/>
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content" />
 
-<!--                    display time passed-->
-                    <LinearLayout android:layout_width="0dp"
+                    <!--                    display time passed-->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_weight="1"
-                        android:gravity="center" android:padding="8dp"
-                        android:background="#FAFAFA">
+                        android:background="#FAFAFA"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
-                        <ImageView android:layout_width="25dp"
+                        <ImageView
+                            android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:src="@drawable/time" />
 
-                        <Space android:layout_width="wrap_content"
-                            android:layout_height="5dp"/>
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="5dp" />
 
-                        <TextView android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:text="Time"/>
-
-                        <TextView android:id="@+id/time"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14dp"
-                            android:text="0.5 min"/>
+                            android:text="Time"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.5 min"
+                            android:textSize="14dp" />
 
                     </LinearLayout>
                 </LinearLayout>
 
-        </LinearLayout>
-
-<!--            // progress bar for displaying remaining steps-->
-        <LinearLayout
-            android:id="@+id/overviewContainer"
-            android:layout_width="match_parent"
-            android:layout_height="420dp"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
-            >
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="350dp"
-                android:layout_height="394dp"
-                android:layout_gravity="center"
-                android:indeterminateOnly="false"
-                android:paddingTop="10dp"
-                android:progressDrawable="@drawable/count_progress_bar"
-                tools:progress="70"></ProgressBar>
-            <TextView
-                android:id="@+id/stepsRemaining"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                android:layout_gravity="center"
-                android:layout_marginTop="-230dp"
-                android:textSize="37dp"
-                tools:text="Goal Reached" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-<!--               display user step goal -->
-                <TextView
-                    android:id="@+id/userGoal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Goal 10000"
-                    android:layout_gravity="center"
-                    android:textSize="15dp">
-                </TextView>
-                <Space android:layout_width="50dp"
-                    android:layout_height="wrap_content">
-                </Space>
-
-                <!-- display user distance goal -->
-                <TextView
-                    android:id="@+id/userDistance"
-                    android:text="Dist: 5.6 km"
-                    android:textSize="15dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
             </LinearLayout>
 
-        </LinearLayout>
-            <!--            button to trasition to next activity-->
+            <!--            // progress bar for displaying remaining steps-->
+            <LinearLayout
+                android:id="@+id/overviewContainer"
+                android:layout_width="match_parent"
+                android:layout_height="420dp"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="350dp"
+                    android:layout_height="350dp"
+                    android:layout_gravity="center"
+                    android:indeterminateOnly="false"
+                    android:paddingTop="10dp"
+                    android:progressDrawable="@drawable/count_progress_bar"
+                    tools:progress="70"></ProgressBar>
+
+                <TextView
+                    android:id="@+id/stepsRemaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-200dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                    android:textSize="37dp"
+                    tools:text="Goal Reached" />
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:gravity="center"
-                    >
-                    <Button
-                        android:id="@+id/button_maps"
+                    android:orientation="horizontal">
+                    <!--               display user step goal -->
+                    <TextView
+                        android:id="@+id/userGoal"
                         android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:text="   Maps   "
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        />
+                        android:text="Goal 10000"
+                        android:textSize="15dp"></TextView>
+
+                    <Space
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"></Space>
+
+                    <!-- display user distance goal -->
+                    <TextView
+                        android:id="@+id/userDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dist: 5.6 km"
+                        android:textSize="15dp"></TextView>
+
                 </LinearLayout>
+                <!--            button to transition to next activity-->
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </RelativeLayout>
 
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="550dp">
+
+        <Button
+            android:id="@+id/button_maps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/round_button"
+            android:text="Maps"
+            app:backgroundTint="#007FFF"
+
+            />
+
+        <Space
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"></Space>
+
+        <Button
+            android:background="@drawable/round_button"
+            app:backgroundTint="#007FFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Reset"
+
+            />
+    </LinearLayout>
 
 </RelativeLayout>
 
