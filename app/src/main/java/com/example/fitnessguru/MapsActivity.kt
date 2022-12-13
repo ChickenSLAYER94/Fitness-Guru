@@ -94,6 +94,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
+
     private fun getCurrentLocationUser() {
         //here we check permission is granted or not
         //if the permission is not granted, permission is requested
@@ -141,7 +142,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             val editText = findViewById<EditText>(R.id.userLocationInput)
                             val locationToLatNLag = editText.text.toString()
                             val addressFind  = addressToLatLng(locationToLatNLag)
-                            //Since addressToLatLng returns $latitude,$longitude delimiter is used sto separate it
+                            //Since addressToLatLng returns $latitude,$longitude delimiter is used to separate it
                             val delimiter=","
                             val list1 = addressFind?.split(delimiter)
                             if (list1 != null) {
@@ -349,10 +350,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 println(addresstoReach)
                 Log.e(disBwtnTwoLoc.toString(),"this is test ****** allu")
 
-
+                //find distance in between two location
                 findViewById<TextView>(R.id.distanceToCover).text = disBwtnTwoLoc
                 locationDetails.add(disBwtnTwoLoc.toString())
+
+                //find duration to reach from one lcoation to another
                 findViewById<TextView>(R.id.estimatedDuration).text = duraBwtnTwoLoc
+
+                //find expected calories burned
+                /*calculation, stats: on avg 10000 steps = 8 km and 1000 steps is 49 kcal burned so
+                by applying this we get*/
+
+                val kmToCalData = disBwtnTwoLoc
+                //Since data disBwtnTwoLoc() contains " km" string with data we have separate it with delimiter to get data only
+                val delimiter=" km"
+                val dataList = kmToCalData?.split(delimiter)
+                if (dataList != null) {
+                    val caloriesToBurned =  dataList.get(0).toDouble() * 61.25
+//                    val show only 1 decimal point
+                    val roundUp = Math.round(caloriesToBurned * 10)/10.0
+                    findViewById<TextView>(R.id.calToBurned).text = roundUp.toString()
+                }
+
+
 
                 val destinationLocation =
                     LatLng(destinationLatitude, destinationLongitude)

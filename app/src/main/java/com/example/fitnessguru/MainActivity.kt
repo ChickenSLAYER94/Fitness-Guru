@@ -16,7 +16,6 @@ import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
-
     private var sensorManager: SensorManager? = null
     private var running = false
     private var totalSteps = 0f
@@ -63,7 +62,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val intent = Intent(this@MainActivity, MapsActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     override fun onResume() {
