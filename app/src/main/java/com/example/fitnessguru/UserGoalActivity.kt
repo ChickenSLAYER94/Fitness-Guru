@@ -3,9 +3,12 @@ package com.example.fitnessguru
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class UserGoalActivity : AppCompatActivity() {
 
@@ -14,13 +17,8 @@ class UserGoalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_goal)
 
-        val userGender = listOf("Male", "Female", "Other", "Prefer not to say")
-        val adapter = ArrayAdapter(this, R.layout.gender_list, userGender)
-        findViewById<AutoCompleteTextView>(R.id.auto_complete_selection).setAdapter(adapter)
-
 
         val button = findViewById<Button>(R.id.userDataConfirm)
-
 
         //before going to the step counter
         //it will ask for digit input

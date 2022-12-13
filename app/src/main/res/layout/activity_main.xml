@@ -28,12 +28,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="30dp"
-                android:text="Step Counter"
-                android:padding="15dp"
-                android:textStyle="bold"
                 android:fontFamily="sans-serif-thin"
-                />
+                android:padding="15dp"
+                android:text="Step Counter"
+                android:textSize="30dp"
+                android:textStyle="bold" />
 
 
             <LinearLayout
@@ -138,7 +137,7 @@
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/time" />
+                            android:src="@drawable/ic_baseline_date_range_24" />
 
                         <Space
                             android:layout_width="wrap_content"
@@ -147,14 +146,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time"
+                            android:text="Date"
                             android:textSize="12dp" />
 
                         <TextView
-                            android:id="@+id/time"
+                            android:id="@+id/dateCurrent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.5 min"
+                            android:text="12-12-2022"
                             android:textSize="14dp" />
 
                     </LinearLayout>
@@ -223,42 +222,56 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/auto_complete_selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:text="Stats"
+
+                app:backgroundTint="#007FFF"
+
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-110dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_maps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_button"
+                    android:text="Maps"
+                    app:backgroundTint="#007FFF"
+
+                    />
+
+                <Space
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"></Space>
+
+
+                <Button
+                    android:id="@+id/input_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_button"
+                    android:text="Reset"
+                    app:backgroundTint="#007FFF" />
+            </LinearLayout>
+
         </LinearLayout>
 
 
     </ScrollView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="550dp">
 
-        <Button
-            android:id="@+id/button_maps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/round_button"
-            android:text="Maps"
-            app:backgroundTint="#007FFF"
-
-            />
-
-        <Space
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"></Space>
-
-        <Button
-            android:background="@drawable/round_button"
-            app:backgroundTint="#007FFF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Reset"
-
-            />
-    </LinearLayout>
 
 </RelativeLayout>
 

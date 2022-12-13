@@ -69,10 +69,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //start weather activity when weather button is pressed in the maps Activity
         findViewById<Button>(R.id.weatherInfo).setOnClickListener {
             val mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-           // Checking GPS is enabled
-           val mGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            // Checking GPS is enabled
+            val mGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
             try {
-                if ((getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnected.toString().equals("true") && mGPS.toString().equals("true")) {
+                if ((getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnected.toString()
+                        .equals("true") && mGPS.toString().equals("true")
+                ) {
                     val currentlatitude = currentLocation.latitude.toString()
                     val currentlongitude = currentLocation.longitude.toString()
                     if (!currentlatitude.equals("")) {
@@ -84,33 +86,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     } else if (currentlatitude.equals("")) {
                         Toast.makeText(applicationContext, "no Input", Toast.LENGTH_SHORT).show()
                     }
-                } else{
+                } else {
                     Toast.makeText(applicationContext, "no no Input", Toast.LENGTH_SHORT).show()
                 }
-            }
-                    catch (e: Exception){
-                        e.printStackTrace()
-                    }finally {
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
                 getCurrentLocationUser()
-                    }
-                }
+            }
         }
+    }
 
 
     // function to return the latitude and longitude of the address
     private fun addressToLatLng(address: String): String? {
         var city: String = address
-        return try{
-            var geoCode= Geocoder(this, Locale.getDefault())
-            var addresses = geoCode.getFromLocationName("$city",1)
+        return try {
+            var geoCode = Geocoder(this, Locale.getDefault())
+            var addresses = geoCode.getFromLocationName("$city", 1)
             var lat = addresses[0].latitude
             var lng = addresses[0].longitude
             "$lat,$lng" //return latitude and longitude separated by ","
-        }catch(e: Exception){
+        } catch (e: Exception) {
             return null
         }
     }
-
 
 
     private fun getCurrentLocationUser() {
@@ -159,20 +159,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             //calling function addressToLatLng which converts human readable address to longitude and latitude
                             val editText = findViewById<EditText>(R.id.userLocationInput)
                             val locationToLatNLag = editText.text.toString()
-                            val addressFind  = addressToLatLng(locationToLatNLag)
+                            val addressFind = addressToLatLng(locationToLatNLag)
                             //Since addressToLatLng returns $latitude,$longitude delimiter is used to separate it
-                            val delimiter=","
+                            val delimiter = ","
                             val list1 = addressFind?.split(delimiter)
                             if (list1 != null) {
                                 destinationLatitude = list1.get(0).toDouble()
                                 destinationLongitude = list1.get(1).toDouble()
 
                                 //test output in logcat **** remove it *****
-                                Log.e(list1.get(0),"this is latitude" )
-                                Log.e(list1.get(1),"this is longitude" )
-                            } else{
+                                Log.e(list1.get(0), "this is latitude")
+                                Log.e(list1.get(1), "this is longitude")
+                            } else {
                                 //if location not found it will print this
-                                Toast.makeText(applicationContext,"Location Invalid",Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Location Invalid",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
 
 
@@ -249,9 +253,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap?.addMarker(markerOptions)
     }
 
-//this method return url to extract the information regarding distance.
+    //this method return url to extract the information regarding distance.
     //here we are using mode walking to get the best route for fitness activity
-     fun findDirectionFromURL(origin: LatLng, dest: LatLng, secret: String): String {
+    fun findDirectionFromURL(origin: LatLng, dest: LatLng, secret: String): String {
         return "https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}" +
                 "&destination=${dest.latitude},${dest.longitude}" +
                 "&sensor=false" +
@@ -261,7 +265,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //retrieve google maps direction from API
     //this will call decodeJsonMarking function for decoding Json file
-     inner class findDirection(val url: String) :
+    inner class findDirection(val url: String) :
         AsyncTask<Void, Void, List<List<LatLng>>>() {
         override fun doInBackground(vararg params: Void?): List<List<LatLng>> {
             val req = Request.Builder().url(url).build()
@@ -296,7 +300,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-
     /*since the information from google maps direction url in getDirectionURL() function results in json
     we have to decode it*/
     fun decodeJsonMarking(encoded: String): List<LatLng> {
@@ -326,7 +329,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             } while (b >= 0x20)
             val dlng = if (output and 1 != 0) (output shr 1).inv() else output shr 1
             longitude += dlng
-            val latitudePlusLongitude = LatLng((latitude.toDouble() / 1E5), (longitude.toDouble() / 1E5))
+            val latitudePlusLongitude =
+                LatLng((latitude.toDouble() / 1E5), (longitude.toDouble() / 1E5))
             lineMarking.add(latitudePlusLongitude)
         }
         return lineMarking
@@ -336,16 +340,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     //call google direction api and convert json to get location information
     inner class updateDistanceAndDuration() : AsyncTask<String, Void, String>() {
         override fun doInBackground(vararg params: String?): String? {
-            var response:String?
-            try{
+            var response: String?
+            try {
                 //api url
                 //here latitude and longitude is manually added for this tutorial
-                response = URL("https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation.latitude},${currentLocation.longitude}" +
-                        "&destination=${destinationLatitude},${destinationLongitude}" +
-                        "&sensor=false" +
-                        "&mode=walking" +
-                        "&key=$API").readText(Charsets.UTF_8)
-            }catch (e: Exception){
+                response = URL(
+                    "https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation.latitude},${currentLocation.longitude}" +
+                            "&destination=${destinationLatitude},${destinationLongitude}" +
+                            "&sensor=false" +
+                            "&mode=walking" +
+                            "&key=$API"
+                ).readText(Charsets.UTF_8)
+            } catch (e: Exception) {
                 response = null
             }
             return response
@@ -357,16 +363,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 /* Extracting information from the API which is in JSON */
                 val jsonObj = JSONObject(result)
                 //distance in between two location
-                val disBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getString("text")
+                val disBwtnTwoLoc =
+                    jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
+                        .getJSONObject(0).getJSONObject("distance").getString("text")
 
                 //Duration to reach from one destination to another
-                val duraBwtnTwoLoc = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").getString("text")
+                val duraBwtnTwoLoc =
+                    jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
+                        .getJSONObject(0).getJSONObject("duration").getString("text")
 
-                val addresstoReach = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getString("end_address")
+                val addresstoReach =
+                    jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
+                        .getJSONObject(0).getString("end_address")
                 println(disBwtnTwoLoc)
                 println(duraBwtnTwoLoc)
                 println(addresstoReach)
-                Log.e(disBwtnTwoLoc.toString(),"this is test ****** allu")
+                Log.e(disBwtnTwoLoc.toString(), "this is test ****** allu")
 
                 //find distance in between two location
                 findViewById<TextView>(R.id.distanceToCover).text = disBwtnTwoLoc
@@ -381,21 +393,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val kmToCalData = disBwtnTwoLoc
                 //Since data disBwtnTwoLoc() contains " km" string with data we have separate it with delimiter to get data only
-                val delimiter=" km"
+                val delimiter = " km"
                 val dataList = kmToCalData?.split(delimiter)
                 if (dataList != null) {
-                    val caloriesToBurned =  dataList.get(0).toDouble() * 61.25
+                    val caloriesToBurned = dataList.get(0).toDouble() * 61.25
 //                    val show only 1 decimal point
-                    val roundUp = Math.round(caloriesToBurned * 10)/10.0
+                    val roundUp = Math.round(caloriesToBurned * 10) / 10.0
                     findViewById<TextView>(R.id.calToBurned).text = roundUp.toString()
                 }
-
 
 
                 val destinationLocation =
                     LatLng(destinationLatitude, destinationLongitude)
 
-                val markerOptions = MarkerOptions().position(destinationLocation).title(disBwtnTwoLoc+", "+addresstoReach)
+                val markerOptions = MarkerOptions().position(destinationLocation)
+                    .title(disBwtnTwoLoc + ", " + addresstoReach)
                 mMap.addMarker(markerOptions)
 
             } catch (e: Exception) {
@@ -404,10 +416,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
     }
-
-
-
-
 
 
 }
