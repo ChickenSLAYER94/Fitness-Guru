@@ -1,11 +1,14 @@
 package com.example.fitnessguru
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -59,25 +62,40 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getCurrentLocationUser()
 
+        //rerun getCurrentLocation user and get updated getCurrentLocation
+        findViewById<Button>(R.id.updateLocation).setOnClickListener {
+            getCurrentLocationUser()
+        }
         //start weather activity when weather button is pressed in the maps Activity
         findViewById<Button>(R.id.weatherInfo).setOnClickListener {
-            val currentlatitude = currentLocation.latitude.toString()
-            val currentlongitude = currentLocation.longitude.toString()
-
-            if (!currentlatitude.equals("")) {
-                val intent = Intent(this, WeatherActivity::class.java).also {
-                    it.putExtra("latitudeInfo", currentlatitude)
-                    it.putExtra("longitudeInfo", currentlongitude)
-                    startActivity(it)
+            val mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+           // Checking GPS is enabled
+           val mGPS = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            try {
+                if ((getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnected.toString().equals("true") && mGPS.toString().equals("true")) {
+                    val currentlatitude = currentLocation.latitude.toString()
+                    val currentlongitude = currentLocation.longitude.toString()
+                    if (!currentlatitude.equals("")) {
+                        val intent = Intent(this, WeatherActivity::class.java).also {
+                            it.putExtra("latitudeInfo", currentlatitude)
+                            it.putExtra("longitudeInfo", currentlongitude)
+                            startActivity(it)
+                        }
+                    } else if (currentlatitude.equals("")) {
+                        Toast.makeText(applicationContext, "no Input", Toast.LENGTH_SHORT).show()
+                    }
+                } else{
+                    Toast.makeText(applicationContext, "no no Input", Toast.LENGTH_SHORT).show()
                 }
             }
-            else if (currentlatitude.equals("")){
-                Toast.makeText(applicationContext,"no Input",Toast.LENGTH_SHORT).show()
-            }
-
+                    catch (e: Exception){
+                        e.printStackTrace()
+                    }finally {
+                getCurrentLocationUser()
+                    }
+                }
         }
 
-    }
 
     // function to return the latitude and longitude of the address
     private fun addressToLatLng(address: String): String? {

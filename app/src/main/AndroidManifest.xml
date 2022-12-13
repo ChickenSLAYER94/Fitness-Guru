@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+<!--    I am using this to check the state of the internet-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -43,7 +45,7 @@
             android:value="AIzaSyBWWHcXQ-1vr1MmjKKrYFh3ZwSFvSY9V30" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".MapsActivity" android:configChanges="orientation|screenSize"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity

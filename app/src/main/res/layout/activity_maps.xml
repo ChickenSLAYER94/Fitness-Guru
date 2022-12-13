@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MapsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MapsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+     >
 
 
         <EditText
@@ -23,18 +22,31 @@
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:hint="Enter Location here"
-            android:inputType="text" />
+            android:inputType="text"
+            android:layout_marginLeft="10dp"
+            />
 
 
-
-<!--        //add icon to the button-->
+        <!--        //add icon to the button-->
         <Button
             android:id="@+id/directions"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            style="@style/Widget.MaterialComponents.Button.Icon"
             app:icon="@drawable/ic_baseline_search_24"
-            />
+
+           />
+
+<!--        this for updating current location-->
+        <Button
+            android:id="@+id/updateLocation"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            app:icon="@drawable/ic_baseline_location_searching_24"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+           />
 
         <!-- <Space
              android:layout_width="10dp"
@@ -46,13 +58,13 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_weight="10"
         android:layout_height="0dp"
-        map:uiZoomControls="true"
-        map:uiRotateGestures="true"
+        android:layout_weight="10"
         map:cameraTilt="30"
-        tools:ignore="FragmentTagUsage"
-       >
+        map:uiRotateGestures="true"
+        map:uiZoomControls="true"
+        tools:ignore="FragmentTagUsage">
+
     </fragment>
 
     <!--    button to initiate route functionality-->
@@ -60,9 +72,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-25dp"
         android:background="#FAFAFA"
+        android:orientation="vertical"
         android:paddingTop="30dp"
         android:paddingBottom="30dp">
 
@@ -76,107 +89,125 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
                 android:gravity="center"
-                >
+                android:orientation="vertical">
 
-                <ImageView android:layout_width="25dp"
+                <ImageView
+                    android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@drawable/distance" />
 
-                <Space android:layout_width="wrap_content"
-                    android:layout_height="5dp"/>
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:text="Distance"/>
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="5dp" />
 
-                <TextView android:id="@+id/distanceToCover"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Distance"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/distanceToCover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
                     android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:text="0"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
-            <Space android:layout_width="10dp"
-                android:layout_height="wrap_content"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
 
             <!-- displays calorie burned-->
-            <LinearLayout android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
                 android:gravity="center"
-              >
+                android:orientation="vertical">
 
-                <ImageView android:layout_width="25dp"
+                <ImageView
+                    android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/calories"/>
-                <Space android:layout_width="wrap_content"
-                    android:layout_height="5dp"/>
+                    android:src="@drawable/calories" />
 
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:text="Kcal to Burned"/>
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="5dp" />
 
-                <TextView android:id="@+id/calToBurned"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Kcal to Burned"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/calToBurned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
                     android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:text="0"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
-            <Space android:layout_width="10dp"
-                android:layout_height="wrap_content"/>
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
 
             <!-- display time passed-->
-            <LinearLayout android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center" >
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <ImageView android:layout_width="25dp"
+                <ImageView
+                    android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@drawable/time" />
 
-                <Space android:layout_width="wrap_content"
-                    android:layout_height="5dp"/>
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="5dp" />
 
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:text="Duration"/>
-
-                <TextView android:id="@+id/estimatedDuration"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Duration"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/estimatedDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
                     android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:text="0"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
 
-    <Button
-        android:id="@+id/weatherInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Weather Status" />
+        <Button
+            android:id="@+id/weatherInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Weather Status" />
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>
