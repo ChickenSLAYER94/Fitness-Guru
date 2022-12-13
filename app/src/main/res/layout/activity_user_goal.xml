@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="25dp"
-                android:text="Welcome to Fitness Gurr app"
+                android:text="Welcome to Fitness Guru app"
                 android:textSize="25dp"
                 android:textStyle="bold" />
 
